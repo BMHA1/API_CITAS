@@ -274,7 +274,7 @@ FakesAssemblies/
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
 node_modules/
-
+Secret/
 # Visual Studio 6 build log
 *.plg
 
@@ -348,3 +348,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+.env/
+.package-lock.json/
+.package.json/
