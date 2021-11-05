@@ -1,6 +1,6 @@
 .env
 package-lock.json
-package.jason
+package.json
 config.json
 node_modules
 migrations
