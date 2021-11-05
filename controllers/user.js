@@ -29,7 +29,8 @@ module.exports.createUser = async (req, res) => {
 module.exports.searchUser = (req, res) => {
 
     User.findByPk(req.params.id)
-        .then((user) => {
+ 
+    .then((user) => {
             if (!user) res.status(200).send('El usuario no existe')
             res.status(200).json({ data: user })
         }, (error) => { res.status(400).send(error) })
