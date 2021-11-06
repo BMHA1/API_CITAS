@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // const { where } = require('sequelize/types')
 const { User, Appointment } = require('../models/index.js')
 const { Op } = require("sequelize")
@@ -19,11 +20,28 @@ module.exports.createUser = async (req, res) => {
 
     } catch (error) {
         res.status(400).send({
+=======
+const { User } = require('../models/index.js')
+
+module.exports.createUser = async (req, res) => {
+    try {
+        const userDetails = req.body
+        await User.create(userDetails);
+        res.status(200).send({
+            status: 200,
+            message: 'Se ha generado un nuevo usuario.',
+            data: {userDetails}
+        });
+    }
+    catch (error) {
+        return res.status(400).send({
+>>>>>>> d072ee86174de3fd00bb796382b72a7527f7437a
             message: 'No se ha podido generar un nuevo usuario.',
             errors: error,
             status: 400
         });
     }
+<<<<<<< HEAD
 }
 //buscamos Usuario
 module.exports.searchUser = (req, res) => {
@@ -71,3 +89,6 @@ module.exports.deleteUser = (req, res) => {
 }
 
 
+=======
+}
+>>>>>>> d072ee86174de3fd00bb796382b72a7527f7437a
