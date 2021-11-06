@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const dotenv = require('dotenv').config()
 // const sequelize = require('./database/db')
-// var jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const config = require('./config/config.json');
 
 app.use(express.json());
