@@ -15,7 +15,7 @@ module.exports.createAppointment = async (req, res) => {
         res.status(200).json({ appointment: newAppointment });
     } catch (error) {
         res.status(400).send({
-            message: 'No se ha podido generar un nuevo usuario.',
+            message: 'No se ha podido generar una nueva cita.',
             errors: error,
             status: 400
         });
@@ -25,7 +25,7 @@ module.exports.createAppointment = async (req, res) => {
 // Buscamos una cita por ID.
 
 module.exports.searchAppointment = (req, res) => {
-    Appointment.findByPk(req.params.id)
+    Appointment.findByPk(req.params.idUser)
         .then((appointment) => {
             if (!appointment) res.status(200).send('La cita no existe.')
             res.status(200).json({ data: Appointment })
