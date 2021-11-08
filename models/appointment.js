@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+// const {user}=require('./index')
 module.exports = (sequelize, DataTypes) => {
   class Appointment extends Model {
     /**
@@ -10,8 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-    }
+      Appointment.belongsTo(models.User, { // un usario se puede replicar muchas veces
+       
+      });
+
+    };
   };
   Appointment.init({
     date: DataTypes.FLOAT,

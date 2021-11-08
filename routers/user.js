@@ -1,12 +1,13 @@
 const router = require('express').Router()
-const contoller = require('../controllers/user')
+const controllers = require('../controllers/user')
+const middleware= require('../Middleware/functions')
 
 
-
-router.post('/', contoller.createUser) // creamos usuario
-router.get('/all', contoller.searchAll)//busca todos los usario
-router.get('/:id', contoller.searchUser)//busca por id
-router.put('/:put', contoller.updateContent)//modificar apellidos
-router.delete('/', contoller.deleteUser)//modificar apellidos
+router.post('/login',controllers.loggin)// logeamos User
+router.post('/', middleware.verificarToken,   controllers.createUser) // creamos usuario
+router.get('/all', controllers.searchAll)//busca todos los usario
+router.get('/:id', controllers.searchUser)//busca por id
+router.put('/:put', controllers.updateContent)//modificar apellidos
+router.delete('/', middleware.verificarToken ,controllers.deleteUser)//Eliminar User
 module.exports = router;
 

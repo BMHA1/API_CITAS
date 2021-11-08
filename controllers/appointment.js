@@ -20,6 +20,7 @@ module.exports.createAppointment = async (req, res) => {
             status: 400
         });
     }
+
 }
 
 // Buscamos una cita por ID.
@@ -65,4 +66,5 @@ module.exports.deleteAppointment = (req, res) => {
             }
         }
     })
+
 }

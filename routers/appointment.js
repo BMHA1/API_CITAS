@@ -1,3 +1,4 @@
+
 const router = require ('express').Router();
 const controller = require ('../controllers/appointment.js');
 
@@ -9,3 +10,4 @@ router.delete(('/'), controller.deleteAppointment); // Método para borrar la ci
 
 
 module.exports = router;
+
