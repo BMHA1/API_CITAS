@@ -1,4 +1,6 @@
 'use strict';
+
+const { sequelize } = require("../models");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Appointments', {
@@ -13,6 +15,15 @@ module.exports = {
       },
       state: {
         type: Sequelize.STRING
+      },
+      user_id: {
+        type: sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'users'
+          },
+          key: 'id'
+        }
       },
       createdAt: {
         allowNull: false,

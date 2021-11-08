@@ -32,6 +32,15 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
+      appointment_id: {
+        type: sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'appointments'
+          },
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
