@@ -1,5 +1,4 @@
 'use strict';
-
 const { sequelize } = require("../models");
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -16,9 +15,9 @@ module.exports = {
       state: {
         type: Sequelize.STRING
       },
-      user_id: {
-        type: sequelize.INTEGER,
-        references: {
+      userId:{ 
+        type: Sequelize.INTEGER,
+        references:{
           model: {
             tableName: 'users'
           },
