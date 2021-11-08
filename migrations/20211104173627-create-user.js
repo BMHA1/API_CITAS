@@ -15,31 +15,29 @@ module.exports = {
         type: Sequelize.STRING
       },
       mail: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique:true,
+        validation: {
+          isEmail: false
+        }
       },
       password: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       phone: {
         type: Sequelize.FLOAT
       },
       role: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       age: {
         type: Sequelize.STRING
       },
       address: {
         type: Sequelize.STRING
-      },
-      appointment_id: {
-        type: sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'appointments'
-          },
-          key: 'id'
-        }
       },
       createdAt: {
         allowNull: false,

@@ -1,8 +1,7 @@
 'use strict';
-<<<<<<< HEAD
-const {
-  Model
-} = require('sequelize');
+
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -11,32 +10,32 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-    }
-  };
-=======
-
-const {  Model  } = require('sequelize');
-
-module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
-        static associate(models) {}
+      User.hasMany(models.Appointment, { // un usario se puede replicar muchas veces
+        foreignKey: 'id'
+      });
+    };
   };
 
->>>>>>> d072ee86174de3fd00bb796382b72a7527f7437a
   User.init({
     name: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    mail: DataTypes.STRING,
-    password: DataTypes.STRING,
+    mail:{ 
+      type:DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validation:{
+        
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      },
     phone: DataTypes.FLOAT,
     role: DataTypes.STRING,
     age: DataTypes.STRING,
-<<<<<<< HEAD
     address: DataTypes.STRING
-=======
-    adress: DataTypes.STRING
->>>>>>> d072ee86174de3fd00bb796382b72a7527f7437a
+
   }, {
     sequelize,
     modelName: 'User',
