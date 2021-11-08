@@ -33,3 +33,11 @@ module.exports.compareHash = async (objectUser) => {
         })
     }
 }
+module.exports.verificarToken = (req, res, next) => {
+    try {
+        jwt.verify(req.headers.token, process.env.TOKEN)
+        next()
+    } catch (error) {
+        res.json({ error: 'Acceso denegado, lo siento registrese.' })
+    }
+}
