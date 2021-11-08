@@ -3,16 +3,26 @@ const { User, Appointment } = require('../models/index.js')
 const { Op } = require("sequelize")
 // const { Module } = require('module')
 // const { Json } = require('sequelize/types/lib/utils')
-
+const decryptuser=require('../Middleware/decryptoken')
 
 // Creamos una cita. (Aquí necesitamos middleware para autenticar USER)
 
 module.exports.createAppointment = async (req, res) => {
+    
     try {
-        console.log(req.body)
-        const newAppointment = req.Appointment
+        
+        let user= decryptuser.decryptken(req.headers.token)
+                  let {data}=user
+                  let {date}=req.body
+                  
+
+        const newAppointment = {
+            id:data,
+            date:date
+        }
+        // if (newAppointment.date ) // comprobar fecha cita... (limitar pedir citas sabados y domingos)
         await Appointment.create(newAppointment)
-        res.status(200).json({ appointment: newAppointment });
+        // res.status(200).json({ appointment: newAppointment });
     } catch (error) {
         res.status(400).send({
             message: 'No se ha podido generar una nueva cita.',
@@ -20,7 +30,6 @@ module.exports.createAppointment = async (req, res) => {
             status: 400
         });
     }
-
 }
 
 // Buscamos una cita por ID.
