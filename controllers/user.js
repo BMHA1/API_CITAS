@@ -63,7 +63,7 @@ module.exports.deleteUser = (req, res) => {
 
         }
     })
-}giy
+}
 //login
 module.exports.loggin = async (req, res) => {
     try {
