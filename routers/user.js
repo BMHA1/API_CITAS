@@ -1,13 +1,13 @@
 const router = require('express').Router()
-const controllers = require('../controllers/user')
+const controller = require('../controllers/user')
 const middleware= require('../Middleware/functions')
 
 
-router.post('/login',controllers.loggin)// logeamos User
-router.post('/', middleware.verificarToken,   controllers.createUser) // creamos usuario
-router.get('/all', controllers.searchAll)//busca todos los usario
-router.get('/:id', controllers.searchUser)//busca por id
-router.put('/:put', controllers.updateContent)//modificar apellidos
-router.delete('/', middleware.verificarToken ,controllers.deleteUser)//Eliminar User
+router.post('/login',controller.loggin)// logeamos User
+// router.post('/', middleware.verificarToken,   controller.createUser) // creamos usuario
+router.get('/all', controller.searchAll)//busca todos los usario
+router.get('/:id', controller.searchUser)//busca por id
+router.put('/:put', controller.updateContent)//modificar apellidos
+// router.delete('/', middleware.verificarToken ,controller.deleteUser)//Eliminar User
 module.exports = router;
 
