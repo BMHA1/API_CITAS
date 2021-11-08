@@ -17,14 +17,15 @@ module.exports.createUser = async (req, res) => {
         newUser.password = hashing.createHash(newUser.password)
         await User.create(newUser)
         res.status(200).json({ user: newUser });
-
     } catch (error) {
         res.status(400).json({
             message: 'No se ha podido generar un nuevo usuario.',
      });
     }
 }
+
 //buscamos Usuario
+
 module.exports.searchUser = (req, res) => {
     User.findByPk(req.params.id)
         .then((user) => {
@@ -32,13 +33,20 @@ module.exports.searchUser = (req, res) => {
             res.status(200).json({ data: user })
         }, (error) => { res.status(400).send(error) })
 }
-//Buscamos todos los usarios
+
+
+// Buscamos todos los usarios
+
 module.exports.searchAll = (req, res) => {
     User.findAll({})
         .then((users) => res.status(200).json({ Data: users }),
             (error) => { res.status(400), send(error) })
 }
-//Modificación del apellido
+
+
+// Modificación del apellido
+
+
 module.exports.updateContent = (req, res) => {
     let modification = req.body
     // let clave=req.params.put
@@ -51,13 +59,17 @@ module.exports.updateContent = (req, res) => {
             (error) => { res.status(200), send(error) })
 }
 
+
+
+
+
 //Eliminar un usuario por su ID
+
 module.exports.deleteUser = (req, res) => {
     console.log(res.query.id)
     let arr = Json.parse(res.query.id)
     User.destroy({
         where: {
-
             id: {
             }
 
