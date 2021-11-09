@@ -28,19 +28,20 @@ module.exports.createAppointment = async (req, res) => {
         });
     }
 }
-// Buscamos una cita por ID.
-module.exports.searchAppointment = (req, res) => {
-    Appointment.findByPk(req.params.idUser)
-        .then((appointment) => {
-            if (!appointment) res.status(200).send('La cita no existe.')
-            res.status(200).json({ data: Appointment })
-        }, (error) => { res.status(400).send(error) })
-}
 // Buscamos todas las citas. (Aquí necesitamos middleware para autenticar ADMIN)
-module.exports.searchAll = (req, res) => {
-    let appointments = Appointment.findAll({})
-        .then((appointments) => res.status(200).json({ Data: appointments }),
-            (error) => { res.status(400), send(error) })
+module.exports.searchAll = async (req, res) => {
+    try {
+
+        let listAppointment = await Appointment.findAll({})
+        res.status(200).json({ Data: listAppointment })
+
+    } catch (error) {
+        res.status(400).send({
+            message: 'No tienes citas pendientes',
+            status: 400
+        });
+    }
+
 }
 //buscamos citas por estado 'pending'
 module.exports.searchAllPending = async (req, res) => {
@@ -48,23 +49,20 @@ module.exports.searchAllPending = async (req, res) => {
 
         let result = await Appointment.findAll({
             where: {
-                state: 'check',
+                state: 'pending',
             }
         })
         res.status(200).json({ data: result });
 
     } catch (error) {
         res.status(400).send({
-            message: 'No',
+            message: 'No tienes citas pendientes',
             status: 400
         });
     }
 }
 // // Modificación de la cita, por alguna otra fecha
 module.exports.updateAppointment = async (req, res) => {
-
-    console.log(req.body.fechaModificar)
-    console.log(req.body.fechaActual)
     try {
         let resultUpdate = await Appointment.update({ date: req.body.fechaModificar }, {
             where: {
@@ -88,4 +86,26 @@ module.exports.deleteAppointment = (req, res) => {
         }
     })
         .then(() => res.status(200).json({ Data: 'sean eliminados' }), () => { res.status(200), send("error") })
+}
+module.exports.deleteOne = async (req, res) => {
+    try{
+
+        let dateDelete = req.body
+        console.log(dateDelete.AppointementDelete)
+        let user = decrypTuser.decryptoken(req.headers.token)
+        Appointment.destroy({
+            where: {
+                userId: user.data,
+                date:dateDelete.AppointementDelete
+            }
+        })
+        res.status(200).json({ data: `la  cita se ha eliminado con exito a : ${req.body.AppointementDelete}` });
+
+    }catch(error) {
+        res.status(400).send({
+            message: 'ha habido un problema',
+            status: 400
+        });
+    }
+        
 }

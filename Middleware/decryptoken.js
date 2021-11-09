@@ -3,12 +3,21 @@ const jwt = require("jsonwebtoken");
 
 
 
-module.exports.role = async (req, res) => {
+module.exports.role = (req, res,next) => {
   try {
-    let { objectRole } = jwt.decode(req.headers.token)
-    if (objectRole.role === 'admin') next()
+    console.log(req.headers.token)
+    let  objectRole  =  jwt.decode(req.headers.token)
+    console.log(objectRole.role)
+    if (objectRole.role !== 'admin'){
+      res.json({ error: 'A1516515 eres admin.' })
+     
+    }else{
+      console.log('aprobado')
+      next()
+      console.log('aqui llego?')
+    }
   } catch (error) {
-    res.json({ error: 'Acceso denegado, lo siento registrese.' })
+    res.json({ error: error })
   }
 }
 
