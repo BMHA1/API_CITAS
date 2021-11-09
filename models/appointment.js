@@ -12,14 +12,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Appointment.belongsTo(models.User, { // un usario se puede replicar muchas veces
-       
+        foreignKey: 'userId',
       });
-
     };
   };
   Appointment.init({
-    date: DataTypes.FLOAT,
-    state: DataTypes.STRING
+    date: DataTypes.STRING,
+    state: DataTypes.STRING,
+    
   }, {
     sequelize,
     modelName: 'Appointment',

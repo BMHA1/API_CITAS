@@ -13,28 +13,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
 
-      User.hasMany(models.Appointment, { // un usario se puede replicar muchas veces
-        foreignKey: 'id'
+      User.hasMany(models.Appointment, {
+        foreignKey: 'userId',
       });
     };
-
   };
 
   User.init({
     name: DataTypes.STRING,
     lastname: DataTypes.STRING,
-    mail:{ 
-      type:DataTypes.STRING,
+    mail: {
+      type: DataTypes.STRING,
       unique: true,
       allowNull: false,
-      validation:{
+      validation: {
         isEmail: true,
-        }
+      }
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      },
+    },
     phone: DataTypes.FLOAT,
     role: DataTypes.STRING,
     age: DataTypes.STRING,
