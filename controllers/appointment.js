@@ -64,7 +64,7 @@ module.exports.searchAllPending = async (req, res) => {
 // // Modificación de la cita, por alguna otra fecha
 module.exports.updateAppointment = async (req, res) => {
     try {
-        let resultUpdate = await Appointment.update({ date: req.body.fechaModificar }, {
+         await Appointment.update({ date: req.body.fechaModificar }, {
             where: {
                 date: req.body.fechaActual
             }
@@ -78,22 +78,30 @@ module.exports.updateAppointment = async (req, res) => {
     }
 }
 //Eliminar cita por su ID
-module.exports.deleteAppointment = (req, res) => {
-    let user = decrypTuser.decryptoken(req.headers.token)
-    Appointment.destroy({
-        where: {
-            userId: user.data
-        }
-    })
-        .then(() => res.status(200).json({ Data: 'sean eliminados' }), () => { res.status(200), send("error") })
+module.exports.deleteAppointment = async(req, res) => {
+    try{
+        let user = decrypTuser.decryptoken(req.headers.token)
+       await Appointment.destroy({
+            where: {
+                userId: user.data
+            }
+        })
+        res.status(200).json({ Data: 'La cita se ha eliminado' })
+    }catch(error) {
+        res.status(400).send({
+            message: 'ha habido un problema',
+            status: 400
+        });
+    }
 }
+
 module.exports.deleteOne = async (req, res) => {
     try{
 
         let dateDelete = req.body
         console.log(dateDelete.AppointementDelete)
         let user = decrypTuser.decryptoken(req.headers.token)
-        Appointment.destroy({
+       await Appointment.destroy({
             where: {
                 userId: user.data,
                 date:dateDelete.AppointementDelete
