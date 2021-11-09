@@ -11,14 +11,18 @@ const { Console } = require('console')
 module.exports.createUser = async (req, res) => {
     try {
         console.log(req.body)
+
         const newUser = req.body 
+
         newUser.password = hashing.createHash(newUser.password)
         await User.create(newUser)
         res.status(200).json({ user: newUser });
     } catch (error) {
         res.status(400).json({
             message: 'No se ha podido generar un nuevo usuario.',
-    });
+
+        });
+
     }
 }
 
@@ -42,19 +46,19 @@ module.exports.searchUser = (req, res) => {
 
 // Buscamos todos los usarios
 
-module.exports.searchAll = (req, res) => {
+module.exports.searchAll = async(req, res) => {
+
     try{
-        User.findAll({})
-        .then((users) => res.status(200).json({ Data: users }))
+      let users = await User.findAll({})
+       res.status(200).json({ Data: users }))
     }catch (error) {
         res.json({
             message: 'No eres admin.',
             errors: error,
-            status: 400
-        })
-    }
-}
-    
+       })
+     }
+  }
+
 
 
 //login
