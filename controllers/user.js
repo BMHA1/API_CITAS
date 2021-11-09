@@ -13,14 +13,14 @@ module.exports.createUser = async (req, res) => {
     try {
         console.log(req.body)
         const newUser = req.body
-   
+
         newUser.password = hashing.createHash(newUser.password)
         await User.create(newUser)
         res.status(200).json({ user: newUser });
     } catch (error) {
         res.status(400).json({
             message: 'No se ha podido generar un nuevo usuario.',
-     });
+        });
     }
 }
 
@@ -47,34 +47,27 @@ module.exports.searchAll = (req, res) => {
 // Modificación del apellido
 
 
-module.exports.updateContent = (req, res) => {
-    let modification = req.body
-    // let clave=req.params.put
-    User.update(modification, {
-        where: {
-            lastaname: null
-        }
-    })
-        .then((modification) => res.status(200).json({ Data: modification }),
-            (error) => { res.status(200), send(error) })
-}
-
-
-
-
 
 //Eliminar un usuario por su ID
 
-module.exports.deleteUser = (req, res) => {
-    console.log(res.query.id)
-    let arr = Json.parse(res.query.id)
-    User.destroy({
-        where: {
-            id: {
+module.exports.deleteUser = async (req, res) => {
+    try {
+        console.log(res.query.id)
+        let arr = res.query.id
+        User.destroy({
+            where: {
+                id: arr
             }
 
-        }
-    })
+        })
+
+
+    } catch (error) {
+        res.status(400).send({
+            message: 'La cita no se ha modificado',
+            status: 400
+        })
+    }
 }
 //login
 module.exports.loggin = async (req, res) => {
@@ -90,5 +83,4 @@ module.exports.loggin = async (req, res) => {
             status: 400
         })
     }
-
 }
