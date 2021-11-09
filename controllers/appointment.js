@@ -1,18 +1,27 @@
-// const { where } = require('sequelize/types')
 const { User, Appointment } = require('../models/index.js')
 const { Op } = require("sequelize")
-// const { Module } = require('module')
-// const { Json } = require('sequelize/types/lib/utils')
-
-
+const decrypTuser = require('../Middleware/decryptoken')
+const moment = require("moment");
+const timeFunction = require('../helper/calcularfecha')
 // Creamos una cita. (Aquí necesitamos middleware para autenticar USER)
 
 module.exports.createAppointment = async (req, res) => {
+
     try {
-        console.log(req.body)
-        const newAppointment = req.Appointment
-        await Appointment.create(newAppointment)
-        res.status(200).json({ appointment: newAppointment });
+        let user = decrypTuser.decryptken(req.headers.token)
+        let { data } = user
+        let dateAppoinment = req.body.date
+
+
+        let virifyTime= timeFunction.difTime(dateAppoinment)
+
+             
+        let respond = await Appointment.create({
+            date: dateAppoinment,
+            state: 'pending',
+            userId: data,
+        })
+        res.status(200).json({ data: respond });
     } catch (error) {
         res.status(400).send({
             message: 'No se ha podido generar una nueva cita.',
@@ -20,7 +29,6 @@ module.exports.createAppointment = async (req, res) => {
             status: 400
         });
     }
-
 }
 
 // Buscamos una cita por ID.

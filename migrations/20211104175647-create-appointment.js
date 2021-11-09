@@ -10,10 +10,10 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       date: {
-        type: Sequelize.FLOAT
+        type: Sequelize.STRING
       },
       state: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING  
       },
       userId:{ 
         type: Sequelize.INTEGER,

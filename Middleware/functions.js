@@ -33,6 +33,10 @@ module.exports.compareHash = async (objectUser) => {
         })
     }
 }
+
+
+//verificaToken
+
 module.exports.verificarToken = (req, res, next) => {
     try {
         jwt.verify(req.headers.token, process.env.TOKEN)
