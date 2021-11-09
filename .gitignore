@@ -351,5 +351,3 @@ MigrationBackup/
 .ionide/
 
 .env
-package-lock.json
-package.json
