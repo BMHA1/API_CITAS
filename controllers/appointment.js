@@ -1,4 +1,4 @@
-const { User, Appointment } = require('../models/index.js')
+const { User, Appointment, sequelize } = require('../models/index.js')
 const { Op } = require("sequelize")
 const decrypTuser = require('../Middleware/decryptoken')
 const moment = require("moment");
@@ -6,22 +6,20 @@ const timeFunction = require('../helper/calcularfecha')
 // Creamos una cita. (Aquí necesitamos middleware para autenticar USER)
 
 module.exports.createAppointment = async (req, res) => {
-
     try {
-        let user = decrypTuser.decryptken(req.headers.token)
-        let { data } = user
-        let dateAppoinment = req.body.date
-
-
-        let virifyTime= timeFunction.difTime(dateAppoinment)
-
-             
-        let respond = await Appointment.create({
-            date: dateAppoinment,
-            state: 'pending',
-            userId: data,
-        })
-        res.status(200).json({ data: respond });
+        let user = decrypTuser.decryptoken(req.headers.token)
+        // let {data} = user
+        let verifyTime = timeFunction.difTime(req.body.date)
+        if (verifyTime === false) {
+            res.send('Fecha invalida')
+        } else {
+            let respond = await Appointment.create({
+                date: verifyTime,
+                state: 'pending',
+                userId: user.data,
+            })
+            res.status(200).json({ data: respond });
+        }
     } catch (error) {
         res.status(400).send({
             message: 'No se ha podido generar una nueva cita.',
@@ -30,9 +28,7 @@ module.exports.createAppointment = async (req, res) => {
         });
     }
 }
-
 // Buscamos una cita por ID.
-
 module.exports.searchAppointment = (req, res) => {
     Appointment.findByPk(req.params.idUser)
         .then((appointment) => {
@@ -40,39 +36,56 @@ module.exports.searchAppointment = (req, res) => {
             res.status(200).json({ data: Appointment })
         }, (error) => { res.status(400).send(error) })
 }
-
 // Buscamos todas las citas. (Aquí necesitamos middleware para autenticar ADMIN)
-
 module.exports.searchAll = (req, res) => {
-    User.findAll({})
+    let appointments = Appointment.findAll({})
         .then((appointments) => res.status(200).json({ Data: appointments }),
             (error) => { res.status(400), send(error) })
 }
+//buscamos citas por estado 'pending'
+module.exports.searchAllPending = async (req, res) => {
+    try {
 
-// Modificación de la cita.
+        let result = await Appointment.findAll({
+            where: {
+                state: 'check',
+            }
+        })
+        res.status(200).json({ data: result });
 
-module.exports.updateAppointment = (req, res) => {
-    let modification = req.body
-    // let clave=req.params.put
-    Appointment.update(modification, {
-        where: {
-            date: null
-        }
-    })
-        .then((modification) => res.status(200).json({ Data: modification }),
-            (error) => { res.status(200), send(error) })
+    } catch (error) {
+        res.status(400).send({
+            message: 'No',
+            status: 400
+        });
+    }
 }
+// // Modificación de la cita, por alguna otra fecha
+module.exports.updateAppointment = async (req, res) => {
 
-//Eliminar una cita por su ID.
-
+    console.log(req.body.fechaModificar)
+    console.log(req.body.fechaActual)
+    try {
+        let resultUpdate = await Appointment.update({ date: req.body.fechaModificar }, {
+            where: {
+                date: req.body.fechaActual
+            }
+        })
+        res.status(200).json({ data: `la fecha se ha ejecutado con exito a : ${req.body.fechaModificar}` });
+    } catch (error) {
+        res.status(400).send({
+            message: 'La cita no se ha modificado',
+            status: 400
+        });
+    }
+}
+//Eliminar cita por su ID
 module.exports.deleteAppointment = (req, res) => {
-    let arr = Json.parse(res.query.id)
+    let user = decrypTuser.decryptoken(req.headers.token)
     Appointment.destroy({
         where: {
-            id: {
-                [Op.in]: arr
-            }
+            userId: user.data
         }
     })
-
+        .then(() => res.status(200).json({ Data: 'sean eliminados' }), () => { res.status(200), send("error") })
 }
