@@ -13,7 +13,7 @@ module.exports.createUser = async (req, res) => {
     try {
         console.log(req.body)
         const newUser = req.body
-        
+   
         newUser.password = hashing.createHash(newUser.password)
         await User.create(newUser)
         res.status(200).json({ user: newUser });
