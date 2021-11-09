@@ -9,6 +9,7 @@ module.exports.createHash = (password) => {
 }
 //function para comparar el hash para guardar la contraseña encriptada!
 module.exports.compareHash = async (objectUser) => {
+
     try {
         const project = await User.findOne({ where: { mail: objectUser.mail } });
         if (project === null) {
@@ -33,10 +34,7 @@ module.exports.compareHash = async (objectUser) => {
         })
     }
 }
-
-
 //verificaToken
-
 module.exports.verificarToken = (req, res, next) => {
     try {
         jwt.verify(req.headers.token, process.env.TOKEN)
