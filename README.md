@@ -41,8 +41,6 @@ Las acciones que puede hacer una persona al registrarse en esta aplicación van 
 
 Creación de usuario:
 
-…
-
 
     try {
         console.log(req.body)
@@ -55,14 +53,11 @@ Creación de usuario:
             message: 'No se ha podido generar un nuevo usuario.',
     });
     }
-}
 
 
-…
 
 Log in 
 
-…
 
 
     try {
@@ -82,53 +77,20 @@ Log in
 
 
 
-…
+
 
 
 ## Modelo del usuario.
 
-En esta carpeta se establece el modelo inicial en el que vamos a partir en la base de datos, con los datos necesarios para el registro como mostramos en el siguiente código.
+En esta carpeta se establece el modelo inicial en el que vamos a partir en la base de datos, con los datos necesarios para el registro añadido desde la terminal y migrado a la base de datos
 
-
-...
-
-
- User.init({
-    name: DataTypes.STRING,
-    lastname: DataTypes.STRING,
-    mail: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validation: {
-        isEmail: true,
-      }
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phone: DataTypes.FLOAT,
-    role: DataTypes.STRING,
-    age: DataTypes.STRING,
-    address: DataTypes.STRING
-
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
-  return User;
-};
-
-
-...
 
 
 ## Rutas de usuario
 
 En este script simplemente unimos las rutas y establecemos los Middleware para el correcto funcionamiento de la aplicación, es la carpeta que hace de union entre los controladores el servidor y la base de datos de la siguiente forma.
 
-...
+
 
 router.post('/login',controller.loggin)// logeamos User
 router.post('/', middleware.verificarToken,   controller.createUser) // creamos usuario
@@ -138,7 +100,7 @@ router.put('/:put', controller.updateContent)//modificar apellidos
 router.delete('/', middleware.verificarToken ,controller.deleteUser)//Eliminar User
 module.exports = router;
 
-...
+
 
 
 
@@ -149,9 +111,9 @@ Al tener un patrón MVC, los script funcionan de la misma forma que en el usuari
 
 Modificar las citas
 
-…
 
-module.exports.updateAppointment = (req, res) => {
+
+
     let modification = req.body
     // let clave=req.params.put
     Appointment.update(modification, {
@@ -161,26 +123,25 @@ module.exports.updateAppointment = (req, res) => {
     })
         .then((modification) => res.status(200).json({ Data: modification }),
         (error) => { res.status(200), send(error) })
-}
 
-…
+
+
 
 
 ## Buscar una cita
 
-…
 
-module.exports.searchAppointment = (req, res) => {
+
     Appointment.findByPk(req.params.idUser)
         .then((appointment) => {
             if (!appointment) res.status(200).send('La cita no existe.')
             res.status(200).json({ data: Appointment })
         }, (error) => { res.status(400).send(error) })
-}
 
 
 
-…
+
+
 
 
 ## Modelo de Citas
@@ -188,27 +149,19 @@ module.exports.searchAppointment = (req, res) => {
 En esta parte del patrón requerimos al usuario una fecha para la elección de la cita, esta no debe ser anterior al a la fecha en la que se encuentra y por defecto se establece como pendiente.
 
 
-…
-
-Appointment.init({
     date: DataTypes.STRING,
     state: DataTypes.STRING,
     
-  }, {
+
     sequelize,
     modelName: 'Appointment',
-  });
-  return Appointment;
-};
-
-
-…
+ 
 
 ## Ruta de las citas
 
 Este es el scrip que relaciona todos los anteriores mencionados de la siguiente manera:
 
-…
+
 
 router.post('/', controller.createAppointment); // Método para crear la cita.
 router.get('/all', controller.searchAll); // Método para poder ver todas las citas. (Solo para ADMIN)
@@ -217,21 +170,18 @@ router.put('/:put', controller.updateAppointment); // Método para modificar la 
 router.delete('/', controller.deleteAppointment); // Método para borrar la cita. (Solo para ADMIN)
 
 
-…
+
 
 
 ## Middleware
 
 Aquí damos una creación real de un usuario, generando un token de verficación al hacer un nuevo login. En la primera parte de este archivo encontramos el Hashing de la contraseña, que se realiza en el momento en el que un usuario se registra por primera para darle seguridad a la aplicación de la siguiente forma:
 
-…
 
 
     let encrypted = bcrypt.hashSync(password, 10)
     return encrypted
 
-
-…
 
 
 Una vez creado este Hash queda guardado automáticamente en la base de datos como contraseña, por lo que al hacer de nuevo el login para que no haya ningún conflicto comparamos el hash que crea la contraseña login, con el has guardado en la base de datos y si es el mismo se permite el acceso a la aplicación.
@@ -262,15 +212,15 @@ Una vez creado este Hash queda guardado automáticamente en la base de datos com
             status: 400
         })
     }
-}
 
-...
+
+
 
 
 Como hemos explicado anteriormente el usuario requiere de un token para poder acceder a la solicitud de una cita que valida que el usuario es real y para verificar este token utilizamos el siguiente código:
 
 
-...
+
 
     try {
         jwt.verify(req.headers.token, process.env.TOKEN)
@@ -278,7 +228,7 @@ Como hemos explicado anteriormente el usuario requiere de un token para poder ac
     } catch (error) {
         res.json({ error: 'Acceso denegado, lo siento registrese.' })
     }
-}
 
 
-...
+
+
