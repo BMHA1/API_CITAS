@@ -227,10 +227,9 @@ Aquí damos una creación real de un usuario, generando un token de verficación
 …
 
 
-module.exports.createHash = (password) => {
     let encrypted = bcrypt.hashSync(password, 10)
     return encrypted
-}
+
 
 …
 
@@ -240,7 +239,6 @@ Una vez creado este Hash queda guardado automáticamente en la base de datos com
 …
 
 
-module.exports.compareHash = async (objectUser) => {
     try {
         const project = await User.findOne({ where: { mail: objectUser.mail } });
         if (project === null) {
@@ -266,14 +264,14 @@ module.exports.compareHash = async (objectUser) => {
     }
 }
 
+...
+
 
 Como hemos explicado anteriormente el usuario requiere de un token para poder acceder a la solicitud de una cita que valida que el usuario es real y para verificar este token utilizamos el siguiente código:
 
-…
 
+...
 
-
-module.exports.verificarToken = (req, res, next) => {
     try {
         jwt.verify(req.headers.token, process.env.TOKEN)
         next()
@@ -283,4 +281,4 @@ module.exports.verificarToken = (req, res, next) => {
 }
 
 
-…
+...
