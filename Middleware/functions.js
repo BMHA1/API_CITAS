@@ -12,7 +12,9 @@ module.exports.compareHash = async (objectUser) => {
 
     try {
         const project = await User.findOne({ where: { mail: objectUser.mail } });
+        console.log(project + 'es aquí')
         if (project === null) {
+            console.log(project + 'es aquí 2')
             return false
         } else {
             let compare = bcrypt.compareSync(objectUser.password, project.password)
@@ -28,11 +30,7 @@ module.exports.compareHash = async (objectUser) => {
             }
         }
     } catch (error) {
-        res.json({
-            message: 'mail or password denegado.',
-            errors: error,
-            status: 400
-        })
+        console.log('Dio errorsito.')
     }
 }
 //verificaToken
