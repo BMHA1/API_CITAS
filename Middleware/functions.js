@@ -16,6 +16,7 @@ module.exports.compareHash = async (objectUser) => {
             return false
         } else {
             let compare = bcrypt.compareSync(objectUser.password, project.password)
+            console.log(compare)
             if (compare) {
                 const payload = {
                     data: project.id,
