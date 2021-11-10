@@ -12,8 +12,8 @@ module.exports.compareHash = async (objectUser) => {
 
     try {
         const project = await User.findOne({ where: { mail: objectUser.mail } });
-        console.log(project + 'es aquí')
-        if (project === null) {
+        console.log(project.mail + 'es aquí')
+        if (project.mail === null) {
             console.log(project + 'es aquí 2')
             return false
         } else {
