@@ -4,11 +4,14 @@ const middleware= require('../Middleware/functions')
 const checkRole = require('../Middleware/decryptoken')
 
 router.post('/login',controller.loggin)// logeamos User
-router.post('/',   controller.createUser) // creamos usuario
+router.post('/logout', controller.logout )
+router.post('/',  controller.createUser) // creamos usuario
 router.post('/admin', middleware.verificarToken, checkRole.role, controller.createAdmin)
 router.get('/all', middleware.verificarToken,checkRole.role ,controller.searchAll)//busca todos los usario
 router.get('/:id', middleware.verificarToken, controller.searchUser)//busca por id
 router.delete('/', middleware.verificarToken, checkRole.role ,controller.deleteUser)//EliminarUser (solo admin)
+
+
 
 module.exports = router;
 

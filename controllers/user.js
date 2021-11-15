@@ -13,7 +13,7 @@ module.exports.createUser = async (req, res) => {
         console.log(req.body)
 
         const newUser = req.body
-        newUser.role='user'
+        newUser.role = 'user'
         newUser.password = hashing.createHash(newUser.password)
         await User.create(newUser)
         res.status(200).json({ user: newUser });
@@ -87,6 +87,7 @@ module.exports.deleteUser = async (req, res) => {
 }
 //login
 module.exports.loggin = async (req, res) => {
+    
     try {
         let hashDescoted = await hashing.compareHash(req.body)
         console.log(hashDescoted)

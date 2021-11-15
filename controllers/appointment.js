@@ -61,7 +61,7 @@ module.exports.searchAllPending = async (req, res) => {
         });
     }
 }
-// // Modificación de la cita, por alguna otra fecha
+// // Modificación de la cita, por alguna otra fecha//mejorar
 module.exports.updateAppointment = async (req, res) => {
     try {
          await Appointment.update({ date: req.body.fechaModificar }, {

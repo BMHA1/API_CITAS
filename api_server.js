@@ -6,6 +6,7 @@ const app = express();
 app.use(express.json()); //conversor a codigo JSON: MIDELWARE
 const dotenv = require('dotenv').config()
 
+app.use('/', "holamundo")
 app.use('/appointment', appointmentRouter)
 app.use('/user', userRouter)
 app.listen(process.env.PORT, () => console.log('funcionando'))
