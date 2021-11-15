@@ -1,13 +1,14 @@
 const router = require('express').Router()
-const controllers = require('../controllers/user')
+const controller = require('../controllers/user')
 const middleware= require('../Middleware/functions')
+const checkRole = require('../Middleware/decryptoken')
 
+router.post('/login',controller.loggin)// logeamos User
+router.post('/',   controller.createUser) // creamos usuario
+router.post('/admin', middleware.verificarToken, checkRole.role, controller.createAdmin)
+router.get('/all', middleware.verificarToken,checkRole.role ,controller.searchAll)//busca todos los usario
+router.get('/:id', middleware.verificarToken, controller.searchUser)//busca por id
+router.delete('/', middleware.verificarToken, checkRole.role ,controller.deleteUser)//EliminarUser (solo admin)
 
-router.post('/login',controllers.loggin)// logeamos User
-router.post('/', middleware.verificarToken,   controllers.createUser) // creamos usuario
-router.get('/all', controllers.searchAll)//busca todos los usario
-router.get('/:id', controllers.searchUser)//busca por id
-router.put('/:put', controllers.updateContent)//modificar apellidos
-router.delete('/', middleware.verificarToken ,controllers.deleteUser)//Eliminar User
 module.exports = router;
 
