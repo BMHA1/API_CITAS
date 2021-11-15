@@ -47,9 +47,7 @@ module.exports.searchAll = async (req, res) => {
 
 module.exports.searchAllPending = async (req, res) => {
     try {
-        let result = await Appointment.findAll({
-        where: { state: 'Pending', }
-        })
+        let result = await Appointment.findAll({ where: { state: 'Pending', } })
         res.status(200).json({ data: result });
     } catch (error) {
         res.status(400).send({
@@ -92,7 +90,6 @@ module.exports.deleteAppointment = async(req, res) => {
 module.exports.deleteOne = async (req, res) => {
     try{
         let dateDelete = req.body
-        console.log(dateDelete.AppointementDelete)
         let user = decrypTuser.decryptoken(req.headers.token)
         await Appointment.destroy({
             where: {
