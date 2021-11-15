@@ -10,8 +10,6 @@ const { Console } = require('console')
 //creamos usuario
 module.exports.createUser = async (req, res) => {
     try {
-        console.log(req.body)
-
         const newUser = req.body
         newUser.role = 'user'
         newUser.password = hashing.createHash(newUser.password)

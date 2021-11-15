@@ -3,19 +3,19 @@ const { Op } = require("sequelize")
 const decrypTuser = require('../Middleware/decryptoken')
 const moment = require("moment");
 const timeFunction = require('../helper/calcularfecha')
+
 // Creamos una cita. (Aquí necesitamos middleware para autenticar USER)
 
 module.exports.createAppointment = async (req, res) => {
     try {
         let user = decrypTuser.decryptoken(req.headers.token)
-        // let {data} = user
         let verifyTime = timeFunction.difTime(req.body.date)
         if (verifyTime === false) {
-            res.send('Fecha invalida')
+            res.send('Fecha inválida.')
         } else {
             let respond = await Appointment.create({
                 date: verifyTime,
-                state: 'pending',
+                state: 'Pending',
                 userId: user.data,
             })
             res.status(200).json({ data: respond });
@@ -28,32 +28,27 @@ module.exports.createAppointment = async (req, res) => {
         });
     }
 }
+
 // Buscamos todas las citas. (Aquí necesitamos middleware para autenticar ADMIN)
+
 module.exports.searchAll = async (req, res) => {
     try {
-
         let listAppointment = await Appointment.findAll({})
         res.status(200).json({ Data: listAppointment })
-
     } catch (error) {
         res.status(400).send({
-            message: 'No tienes citas pendientes',
+            message: 'No tienes citas pendientes.',
             status: 400
         });
     }
-
 }
-//buscamos citas por estado 'pending'
+
+//Buscamos citas por estado 'pending'
+
 module.exports.searchAllPending = async (req, res) => {
     try {
-
-        let result = await Appointment.findAll({
-            where: {
-                state: 'pending',
-            }
-        })
+        let result = await Appointment.findAll({ where: { state: 'Pending', } })
         res.status(200).json({ data: result });
-
     } catch (error) {
         res.status(400).send({
             message: 'No tienes citas pendientes',
@@ -61,59 +56,50 @@ module.exports.searchAllPending = async (req, res) => {
         });
     }
 }
+
 // // Modificación de la cita, por alguna otra fecha//mejorar
 module.exports.updateAppointment = async (req, res) => {
     try {
-         await Appointment.update({ date: req.body.fechaModificar }, {
-            where: {
-                date: req.body.fechaActual
-            }
+        await Appointment.update({ date: req.body.fechaModificar }, {
+        where: { date: req.body.fechaActual }
         })
-        res.status(200).json({ data: `la fecha se ha ejecutado con exito a : ${req.body.fechaModificar}` });
+        res.status(200).json({ data: 'La fecha se ha ejecutado con éxito a : ${req.body.fechaModificar}' });
     } catch (error) {
         res.status(400).send({
-            message: 'La cita no se ha modificado',
+            message: 'La cita no se ha podido modificar.',
             status: 400
         });
     }
 }
+
 //Eliminar cita por su ID
+
 module.exports.deleteAppointment = async(req, res) => {
     try{
-        let user = decrypTuser.decryptoken(req.headers.token)
-       await Appointment.destroy({
-            where: {
-                userId: user.data
-            }
-        })
-        res.status(200).json({ Data: 'La cita se ha eliminado' })
-    }catch(error) {
+       let user = decrypTuser.decryptoken(req.headers.token)
+       await Appointment.destroy({ where: { userId: user.data } })
+        res.status(200).json({ Data: 'La cita se ha eliminado.' })
+    } catch(error) {
         res.status(400).send({
-            message: 'ha habido un problema',
+            message: 'Ha habido un problema.',
             status: 400
-        });
-    }
+        }); }
 }
 
 module.exports.deleteOne = async (req, res) => {
     try{
-
         let dateDelete = req.body
-        console.log(dateDelete.AppointementDelete)
         let user = decrypTuser.decryptoken(req.headers.token)
-       await Appointment.destroy({
+        await Appointment.destroy({
             where: {
                 userId: user.data,
                 date:dateDelete.AppointementDelete
-            }
-        })
-        res.status(200).json({ data: `la  cita se ha eliminado con exito a : ${req.body.AppointementDelete}` });
-
-    }catch(error) {
+            } })
+        res.status(200).json({ data: `La cita se ha eliminado con éxito a : ${req.body.AppointementDelete}` });
+    } catch(error) {
         res.status(400).send({
-            message: 'ha habido un problema',
+            message: 'Ha habido un problema.',
             status: 400
         });
     }
-        
 }
