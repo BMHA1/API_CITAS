@@ -2,7 +2,8 @@ const { User, Appointment, sequelize } = require('../models/index.js')
 const { Op } = require("sequelize")
 const decrypTuser = require('../Middleware/decryptoken')
 const moment = require("moment");
-const timeFunction = require('../helper/calcularfecha')
+const timeFunction = require('../helper/calcularfecha');
+const { post } = require('../routers/user.js');
 
 // Creamos una cita. (Aquí necesitamos middleware para autenticar USER)
 
@@ -104,3 +105,4 @@ module.exports.deleteOne = async (req, res) => {
         });
     }
 }
+
