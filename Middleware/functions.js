@@ -1,8 +1,13 @@
 const bcrypt = require('bcrypt');
-const jwt = require("jsonwebtoken");
-const moment = require("moment");
+// const jwt = require("jsonwebtoken");
+const redis = require('redis').default;
+const JWTR = require('jwt-redis').default
+const redisClient = redis.createClient();
+const jwtr = new JWTR(redisClient);
 const { User, Appointment } = require('../models/index.js')
+
 //generamos el hash para guardar la contraseña encriptada!
+const moment = require("moment");
 module.exports.createHash = (password) => {
     let encrypted = bcrypt.hashSync(password, 10)
     return encrypted
@@ -12,6 +17,7 @@ module.exports.compareHash = async (objectUser) => {
 
     try {
         const project = await User.findOne({ where: { mail: objectUser.mail } });
+
         console.log(project.mail + 'es aquí')
         if (project.mail === null) {
             console.log(project + 'es aquí 2')
@@ -28,19 +34,28 @@ module.exports.compareHash = async (objectUser) => {
                     iat: moment().unix(),
                     exp: moment().add(2, 'days').unix()
                 }
-                return jwt.sign(payload, process.env.TOKEN)
+                return jwtr.sign(payload, process.env.TOKEN)
             }
         }
     } catch (error) {
-        console.log('Dio errorsito.')
+
+        console.log(error)
+
     }
 }
 //verificaToken
 module.exports.verificarToken = (req, res, next) => {
+
     try {
-        jwt.verify(req.headers.token, process.env.TOKEN)
+        const token = req.headers.token
+        jwtr.verify(token, process.env.TOKEN)
         next()
     } catch (error) {
-        res.json({ error: 'Acceso denegado, lo siento registrese.' })
+        console.log(error)
     }
+}
+
+module.exports.logout = (req, res, next) => {
+    const token = req.headers.token
+    jwtr.destroy(token)
 }
