@@ -9,5 +9,7 @@ const dotenv = require('dotenv').config()
 app.use('/', "holamundo")
 app.use('/appointment', appointmentRouter)
 app.use('/user', userRouter)
-app.listen(process.env.PORT, () => console.log('funcionando'))
+
+
+app.listen(process.env.PORT, () => console.log('Funcionando'))
 console.log(process.env.PORT)
