@@ -8,7 +8,7 @@ router.post('/',   controller.createUser) // creamos usuario
 router.post('/admin', middleware.verificarToken, checkRole.role, controller.createAdmin)
 router.get('/all', middleware.verificarToken,checkRole.role ,controller.searchAll)//busca todos los usario
 router.get('/:id', middleware.verificarToken, controller.searchUser)//busca por id
-router.delete('/', middleware.verificarToken, checkRole.role ,controller.deleteUser)//EliminarUser (solo admin)
+router.delete('/', middleware.verificarToken, checkRole.role, controller.deleteUser)//EliminarUser (solo admin)
 
 module.exports = router;
 
