@@ -14,7 +14,7 @@ El cliente, una vez registrado, puede pedir una cita con un médico siempre y cu
 
 ## Tecnología utilizada
 
-Para el desarrollo de esta aplicación se utiliza como lenguaje JavaScript y una base de datos SQL para una mejor definición y gestión de la misma y consultar y modificar los datos. En cuanto al sistema de gestión nos decantamos por MySQL. La parte gráfica para verificar que lo que añadimos por código no tiene ningún error, y para poder modificar si, es estrictamente necesario desde la misma base de datos, es WordBrench, que nos permite visualizar de una forma más clara, sobre todo de cara a nuestro cliente, todos los datos.
+Para el desarrollo de esta aplicación se utiliza como lenguaje JavaScript,  NodeJS como entorno de ejecución multiplataforma, como base de datos SQL para una mejor definición y gestión de la misma nos decantamos por MySQL. La parte gráfica para verificar que lo que añadimos por código no tiene ningún error, y para poder modificar si, es estrictamente necesario desde la misma base de datos, es WordBrench, que nos permite visualizar de una forma más clara, sobre todo de cara a nuestro cliente, todos los datos.
 
 No existiendo un Frontend, para poder comprobar que esta aplicación funciona, requerimos el uso de Postman, un software que permite la interacción con la base de datos para poder simular el registro.
 
@@ -24,10 +24,10 @@ No existiendo un Frontend, para poder comprobar que esta aplicación funciona, r
 
 Nos ha ayudado la implementación de distintos Frameworks para conseguir un resultado optimo y mas eficiente de la aplicación:
 
-1- NodeJS: que es un entorno de ejecución multiplataforma.
-2-Express: infraestructura de aplicaciones web Node.js mínima y flexible que proporciona un conjunto sólido de características para las aplicaciones web y móviles.
-3-JsonWebToken que nos permite la creación de una identidad para que obtenga privilegios.
-4- Bcrypt sirve para hacer un hashing de una contraseña .
+
+1-Express: infraestructura de aplicaciones web Node.js mínima y flexible que proporciona un conjunto sólido de características para las aplicaciones web y móviles.
+2-JsonWebToken: Es una biblioteca para generar un token de acceso  que permite la propagación de identidad y privelegios.
+3- Bcrypt sirve para hacer un hashing de una contraseña .
 
 
 ## Creación de la aplicación.
@@ -75,11 +75,6 @@ Log in
 
 }
 
-
-
-
-
-
 ## Modelo del usuario.
 
 En esta carpeta se establece el modelo inicial en el que vamos a partir en la base de datos, con los datos necesarios para el registro añadido desde la terminal y migrado a la base de datos
@@ -99,9 +94,6 @@ router.get('/:id', controller.searchUser)//busca por id
 router.put('/:put', controller.updateContent)//modificar apellidos
 router.delete('/', middleware.verificarToken ,controller.deleteUser)//Eliminar User
 module.exports = router;
-
-
-
 
 
 ## Generar citas
@@ -124,10 +116,6 @@ Modificar las citas
         .then((modification) => res.status(200).json({ Data: modification }),
         (error) => { res.status(200), send(error) })
 
-
-
-
-
 ## Buscar una cita
 
 
@@ -137,10 +125,6 @@ Modificar las citas
             if (!appointment) res.status(200).send('La cita no existe.')
             res.status(200).json({ data: Appointment })
         }, (error) => { res.status(400).send(error) })
-
-
-
-
 
 
 
@@ -161,28 +145,18 @@ En esta parte del patrón requerimos al usuario una fecha para la elección de l
 
 Este es el scrip que relaciona todos los anteriores mencionados de la siguiente manera:
 
-
-
 router.post('/', controller.createAppointment); // Método para crear la cita.
 router.get('/all', controller.searchAll); // Método para poder ver todas las citas. (Solo para ADMIN)
 router.get('/:idUser', controller.searchAppointment)// Método para buscar las citas por el ID de Usuario.
 router.put('/:put', controller.updateAppointment); // Método para modificar la fecha.
 router.delete('/', controller.deleteAppointment); // Método para borrar la cita. (Solo para ADMIN)
 
-
-
-
-
 ## Middleware
 
 Aquí damos una creación real de un usuario, generando un token de verficación al hacer un nuevo login. En la primera parte de este archivo encontramos el Hashing de la contraseña, que se realiza en el momento en el que un usuario se registra por primera para darle seguridad a la aplicación de la siguiente forma:
 
-
-
     let encrypted = bcrypt.hashSync(password, 10)
     return encrypted
-
-
 
 Una vez creado este Hash queda guardado automáticamente en la base de datos como contraseña, por lo que al hacer de nuevo el login para que no haya ningún conflicto comparamos el hash que crea la contraseña login, con el has guardado en la base de datos y si es el mismo se permite el acceso a la aplicación.
 
@@ -228,7 +202,3 @@ Como hemos explicado anteriormente el usuario requiere de un token para poder ac
     } catch (error) {
         res.json({ error: 'Acceso denegado, lo siento registrese.' })
     }
-
-
-
-
