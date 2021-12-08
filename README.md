@@ -1,4 +1,7 @@
-# API_CITA
+# API_CLINICA_ODONTOLOGIA
+
+Hemos desarrollado una aplicación de gestión de citas para ua clínica odontologica. donde permite al usuario crear una cuenta, generar citas, modificarla y eliminarlas. 
+a su vez, hay un administrador que puede observar todas las citas y los usarios que están registrado en nuestra APP. 
 
 ***
 
